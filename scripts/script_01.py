@@ -1,6 +1,6 @@
 
 
-# %% 1 - import required libraries
+# %% 0 - import required libraries
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -8,6 +8,10 @@ import statsmodels.api as sm
 
 import yfinance as yf
 
+
+
+# %% 1 - retrieve data for DJIA
+INDICES = pd.read_html('https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')[0]["Symbol"].to_list()
 
 
 
@@ -18,9 +22,7 @@ def retrieve_data(index, start_date = '2017-1-1', end_date = '2023-12-31', progr
 
 
 # %% 3 - 
-INDICES = []
-
-data    = [retrieve_data(index) for index in INDICES]
+data = [retrieve_data(index) for index in INDICES]
 
 
 
@@ -31,4 +33,3 @@ merged = pd.concat(data, axis = 1)
 
 # %% 5 - impute missing data using LOCF (forward fill)
 merged.ffill(inplace = True)
-
