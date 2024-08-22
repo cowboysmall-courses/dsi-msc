@@ -44,14 +44,14 @@ rows = data["Close"].shape[0]
 cols = []
 
 for column in data["Close"].columns:
-    if data["Close"][column].isna().sum() / rows == 0:
+    if data["Close"][column].isna().sum() / rows != 0:
         cols.append(column) 
 
 
 
 # %% 3 - 
-data_open = data["Open"][cols]
-data_clse = data["Close"][cols]
+data_open = data["Open"].drop(columns = cols)
+data_clse = data["Close"].drop(columns = cols)
 data_rets = pd.DataFrame({index: data_clse[index].pct_change(fill_method = None) * 100 for index in data_clse.columns})
 
 
