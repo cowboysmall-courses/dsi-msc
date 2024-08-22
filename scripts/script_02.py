@@ -75,9 +75,9 @@ data_rets = data_rets[start_date:end_date]
 
 
 # %% 3 - 
-def scaled(data):
-    scaled = (data - data.min()) / (data.max() - data.min())
-    return scaled.T 
+def normed(data):
+    normed = (data - data.mean()) / data.std()
+    return normed.T 
 
 
 
@@ -112,20 +112,20 @@ def cluster_plots(data, title):
 
 
 # %% 3 - 
-data_rets_scaled = scaled(data_rets)
-cluster_plots(data_rets_scaled, "Returns - Scaled")
+data_rets_normed = normed(data_rets)
+cluster_plots(data_rets_normed, "Returns - Normed")
 
-data_rets_scaled_cls = pd.DataFrame(KMeans(n_clusters = 4).fit_predict(data_rets_scaled), columns = ["Cluster"], index = data_rets_scaled.index)
-print(np.bincount(data_rets_scaled_cls["Cluster"]))
+data_rets_normed_cls = pd.DataFrame(KMeans(n_clusters = 4).fit_predict(data_rets_normed), columns = ["Cluster"], index = data_rets_normed.index)
+print(np.bincount(data_rets_normed_cls["Cluster"]))
 
 
 
 # %% 3 - 
-data_clse_scaled = scaled(data_clse)
-cluster_plots(data_clse_scaled, "Close - Scaled")
+data_clse_normed = normed(data_clse)
+cluster_plots(data_clse_normed, "Close - Normed")
 
-data_clse_scaled_cls = pd.DataFrame(KMeans(n_clusters = 4).fit_predict(data_clse_scaled), columns = ["Cluster"], index = data_clse_scaled.index)
-print(np.bincount(data_clse_scaled_cls["Cluster"]))
+data_clse_normed_cls = pd.DataFrame(KMeans(n_clusters = 4).fit_predict(data_clse_normed), columns = ["Cluster"], index = data_clse_normed.index)
+print(np.bincount(data_clse_normed_cls["Cluster"]))
 
 
 

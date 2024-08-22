@@ -47,7 +47,7 @@ dependencies = [
   "nltk",
   "wordcloud",
 
-  "yfinance",
+  "yfinance[nospam]",
   "pandas-datareader",
   "mplfinance",
   "ta",
