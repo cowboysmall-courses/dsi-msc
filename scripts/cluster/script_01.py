@@ -19,7 +19,7 @@ warnings.filterwarnings("ignore", category = FutureWarning)
 
 
 # %% 1 -
-plt.figure(figsize = (8, 6))
+# plt.figure(figsize = (8, 6))
 plt.style.use("ggplot")
 
 sns.set_style("darkgrid")
