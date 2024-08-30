@@ -40,7 +40,6 @@ data = yf.download(indices, "2017-12-31", "2024-01-01", progress = False)
 # %% 2 - 
 adjc = data["Close"].dropna(axis = 1)
 rets = adjc.pct_change().iloc[1:, :]
-print(rets.shape)
 
 
 
@@ -49,35 +48,18 @@ rets["AAPL"].plot(figsize = (16, 6))
 
 
 
-# %% 4 - 
-# rets = rets.T
-
-
 # %% 5 - 
 pca = PCA(n_components = 50)
-# comp = pca.fit_transform(rets.T)
 pca.fit(rets)
-comp = pca.components_
-
 
 
 
 # %% 5 - 
-print(comp.shape)
-
-
-# %% 5 - 
-X = comp.T
-print(X)
-
-
-# %% 5 - 
-X = preprocessing.StandardScaler().fit_transform(X)
+X = preprocessing.StandardScaler().fit_transform(pca.components_.T)
 
 
 # %% 5 - 
 clst = DBSCAN(eps = 3)
-# clst = DBSCAN()
 clst.fit(X)
 
 
@@ -97,14 +79,9 @@ tsne = TSNE().fit_transform(X)
 plt.figure(figsize = (16, 9))
 plt.title("Clusters")
 
-plt.scatter(tsne[(lbls != -1), 0], tsne[(lbls != -1), 1], s = 100, alpha = 0.85, c = lbls[lbls != -1], cmap = cm.Paired)
+plt.scatter(tsne[(lbls != -1), 0], tsne[(lbls != -1), 1], s = 100, alpha = 0.95, c = lbls[lbls != -1], cmap = cm.Paired)
 plt.scatter(tsne[(lbls == -1), 0], tsne[(lbls == -1), 1], s = 100, alpha = 0.05)
 
 plt.axis("off")
 plt.show()
 
-
-
-
-
-# %%
