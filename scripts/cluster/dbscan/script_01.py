@@ -20,13 +20,15 @@ from sklearn.decomposition import PCA
 from sklearn.cluster import DBSCAN
 from sklearn.manifold import TSNE
 
+from cowboysmall.data import snp500
+
 import warnings
 warnings.filterwarnings("ignore", category = FutureWarning)
 
 
 
 # %% 1 - retrieve data for DJIA
-indices    = pd.read_html("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies")[0]["Symbol"].to_list()
+indices    = snp500.read()["Symbol"].to_list()
 start_date = "2018-01-01"
 end_date   = "2023-12-31"
 
@@ -55,18 +57,24 @@ pca.fit(rets)
 
 
 # %% 5 - 
-X = preprocessing.StandardScaler().fit_transform(pca.components_.T)
+cmp = pd.DataFrame(pca.components_, columns = rets.columns)
+cmp.head()
+
 
 
 # %% 5 - 
-clst = DBSCAN(eps = 3)
+X = preprocessing.StandardScaler().fit_transform(cmp).T
+
+
+# %% 5 - 
+clst = DBSCAN(eps = 5)
+# clst = DBSCAN()
 clst.fit(X)
 
 
 # %% 5 - 
 lbls = clst.labels_
 print(np.bincount(lbls + 1))
-
 
 
 
@@ -77,11 +85,13 @@ tsne = TSNE().fit_transform(X)
 
 # %% 5 - 
 plt.figure(figsize = (16, 9))
-plt.title("Clusters")
+plt.title("Clusters: DBSCAN")
 
-plt.scatter(tsne[(lbls != -1), 0], tsne[(lbls != -1), 1], s = 100, alpha = 0.95, c = lbls[lbls != -1], cmap = cm.Paired)
-plt.scatter(tsne[(lbls == -1), 0], tsne[(lbls == -1), 1], s = 100, alpha = 0.05)
+plt.scatter(tsne[(lbls != -1), 0], tsne[(lbls != -1), 1], alpha = 0.95, c = lbls[lbls != -1], cmap = cm.Paired)
+plt.scatter(tsne[(lbls == -1), 0], tsne[(lbls == -1), 1], alpha = 0.05)
 
-plt.axis("off")
+plt.axis(False)
 plt.show()
 
+
+# %%
