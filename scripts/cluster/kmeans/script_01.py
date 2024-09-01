@@ -71,13 +71,15 @@ X = preprocessing.StandardScaler().fit_transform(cmp).T
 
 
 # %% 5 - 
-clst = KMeans(n_clusters = 11, max_iter = 1000)
+clst = KMeans(n_clusters = 25, max_iter = 1000)
 clst.fit(X)
 
 
 
 # %% 5 - 
 lbls = clst.labels_
+print(np.bincount(lbls))
+
 cntr = Counter(lbls)
 lbls_p = [cntr[v] <  100 for v in lbls]
 lbls_n = [cntr[v] >= 100 for v in lbls]
@@ -99,5 +101,28 @@ plt.scatter(tsne[(lbls_n), 0], tsne[(lbls_n), 1], alpha = 0.05)
 plt.axis(False)
 plt.show()
 
+
+# %% 3 - 
+def nCr(n, r):
+    return n * (n - 1) // r
+
+
+
+# %% 3 - 
+for lbl in sorted(list(set(lbls))):
+    if lbl > -1:
+        rows = rets.T.loc[(lbls == lbl), :]
+
+        cint = 0
+        for i1, i2 in combinations(rows.index.values, 2):
+            result = coint(rows.loc[i1], rows.loc[i2])
+            if result[1] < 0.05:
+                cint += 1
+
+        print()
+        print(f"          cluster: {lbl + 1}")
+        print(f"             size: {rows.shape[0]}")
+        print(f" all cointegrated: {cint == nCr(rows.shape[0], 2)}")
+        print()
 
 # %%

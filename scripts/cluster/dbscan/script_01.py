@@ -70,7 +70,6 @@ X = preprocessing.StandardScaler().fit_transform(cmp).T
 
 # %% 5 - 
 clst = DBSCAN(eps = 5)
-# clst = DBSCAN()
 clst.fit(X)
 
 
@@ -107,16 +106,16 @@ for lbl in sorted(list(set(lbls))):
     if lbl > -1:
         rows = rets.T.loc[(lbls == lbl), :]
 
-        coint = 0
+        cint = 0
         for i1, i2 in combinations(rows.index.values, 2):
             result = coint(rows.loc[i1], rows.loc[i2])
             if result[1] < 0.05:
-                coint += 1
+                cint += 1
 
         print()
         print(f"          cluster: {lbl + 1}")
         print(f"             size: {rows.shape[0]}")
-        print(f" all cointegrated: {coint == nCr(rows.shape[0], 2)}")
+        print(f" all cointegrated: {cint == nCr(rows.shape[0], 2)}")
         print()
 
 
