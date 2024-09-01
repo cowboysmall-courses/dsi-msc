@@ -19,7 +19,7 @@ from statsmodels.tsa.stattools import coint
 
 from sklearn import preprocessing
 from sklearn.decomposition import PCA
-from sklearn.cluster import DBSCAN
+from sklearn.cluster import OPTICS
 from sklearn.manifold import TSNE
 
 from cowboysmall.data import snp500
@@ -69,7 +69,7 @@ X = preprocessing.StandardScaler().fit_transform(cmp).T
 
 
 # %% 5 - 
-clst = DBSCAN(eps = 5)
+clst = OPTICS(eps = 5)
 # clst = DBSCAN()
 clst.fit(X)
 
