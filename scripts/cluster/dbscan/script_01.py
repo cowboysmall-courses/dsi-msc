@@ -17,7 +17,7 @@ from itertools import combinations
 
 from statsmodels.tsa.stattools import coint
 
-from sklearn import preprocessing
+from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.cluster import DBSCAN
 from sklearn.manifold import TSNE
@@ -31,8 +31,6 @@ warnings.filterwarnings("ignore", category = FutureWarning)
 
 # %% 1 - retrieve data for DJIA
 indices    = snp500.read()["Symbol"].to_list()
-start_date = "2018-01-01"
-end_date   = "2023-12-31"
 
 
 
@@ -65,12 +63,14 @@ cmp.head()
 
 
 # %% 5 - 
-X = preprocessing.StandardScaler().fit_transform(cmp).T
+X = StandardScaler().fit_transform(cmp).T
+
 
 
 # %% 5 - 
 clst = DBSCAN(eps = 5)
 clst.fit(X)
+
 
 
 # %% 5 - 
@@ -93,6 +93,7 @@ plt.scatter(tsne[(lbls == -1), 0], tsne[(lbls == -1), 1], alpha = 0.05)
 
 plt.axis(False)
 plt.show()
+
 
 
 # %% 3 - 

@@ -5,9 +5,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import seaborn as sns
-
-import statsmodels.api as sm
 
 import yfinance as yf
 
@@ -17,7 +14,7 @@ from itertools import combinations
 
 from statsmodels.tsa.stattools import coint
 
-from sklearn import preprocessing
+from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 from sklearn.manifold import TSNE
@@ -30,9 +27,7 @@ warnings.filterwarnings("ignore", category = FutureWarning)
 
 
 # %% 1 - retrieve data for DJIA
-indices    = snp500.read()["Symbol"].to_list()
-start_date = "2018-01-01"
-end_date   = "2023-12-31"
+indices = snp500.read()["Symbol"].to_list()
 
 
 
@@ -66,7 +61,7 @@ cmp.head()
 
 
 # %% 5 - 
-X = preprocessing.StandardScaler().fit_transform(cmp).T
+X = StandardScaler().fit_transform(cmp).T
 
 
 
@@ -102,6 +97,7 @@ plt.axis(False)
 plt.show()
 
 
+
 # %% 3 - 
 def nCr(n, r):
     return n * (n - 1) // r
@@ -124,5 +120,7 @@ for lbl in sorted(list(set(lbls))):
         print(f"             size: {rows.shape[0]}")
         print(f" all cointegrated: {cint == nCr(rows.shape[0], 2)}")
         print()
+
+
 
 # %%

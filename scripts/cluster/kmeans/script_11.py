@@ -6,12 +6,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-import statsmodels.api as sm
-
 import yfinance as yf
 
+from sklearn.preprocessing import MinMaxScaler
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
+
+from cowboysmall.data import snp500
 
 import warnings
 warnings.filterwarnings("ignore", category = FutureWarning)
@@ -19,7 +20,6 @@ warnings.filterwarnings("ignore", category = FutureWarning)
 
 
 # %% 1 -
-# plt.figure(figsize = (8, 6))
 plt.style.use("ggplot")
 
 sns.set_style("darkgrid")
@@ -28,7 +28,7 @@ sns.set_context("paper")
 
 
 # %% 1 - retrieve data for DJIA
-indices    = pd.read_html("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies")[0]["Symbol"].to_list()
+indices    = snp500.read()["Symbol"].to_list()
 start_date = "2019-01-01"
 end_date   = "2023-12-31"
 
@@ -50,34 +50,8 @@ for column in data["Close"].columns:
 
 
 # %% 3 - 
-data_open = data["Open"].drop(columns = cols)
 data_clse = data["Close"].drop(columns = cols)
 data_rets = pd.DataFrame({index: data_clse[index].pct_change() * 100 for index in data_clse.columns})
-
-
-
-# %% 3 - impute missing data using LOCF (forward fill)
-data_open = data_open.ffill()
-data_open = data_open[start_date:end_date]
-
-
-
-# %% 3 - impute missing data using LOCF (forward fill)
-data_clse = data_clse.ffill()
-data_clse = data_clse[start_date:end_date]
-
-
-
-# %% 3 - impute missing data using LOCF (forward fill)
-data_rets = data_rets.ffill()
-data_rets = data_rets[start_date:end_date]
-
-
-
-# %% 3 - 
-def scaled(data):
-    scaled = (data - data.min()) / (data.max() - data.min())
-    return scaled.T 
 
 
 
@@ -110,39 +84,26 @@ def cluster_plots(data, title):
 
 
 
+# %% 3 - impute missing data using LOCF (forward fill)
+data_clse = data_clse.ffill()
+data_clse = data_clse[start_date:end_date]
+data_clse = MinMaxScaler().fit_transform(data_clse).T
 
-# %% 3 - 
-data_rets_scaled = scaled(data_rets)
-cluster_plots(data_rets_scaled, "Returns - Scaled")
+cluster_plots(data_clse, "Close - Scaled")
 
-data_rets_scaled_cls = pd.DataFrame(KMeans(n_clusters = 4).fit_predict(data_rets_scaled), columns = ["Cluster"], index = data_rets_scaled.index)
-print(np.bincount(data_rets_scaled_cls["Cluster"]))
-
-
-
-# %% 3 - 
-data_clse_scaled = scaled(data_clse)
-cluster_plots(data_clse_scaled, "Close - Scaled")
-
-data_clse_scaled_cls = pd.DataFrame(KMeans(n_clusters = 4).fit_predict(data_clse_scaled), columns = ["Cluster"], index = data_clse_scaled.index)
-print(np.bincount(data_clse_scaled_cls["Cluster"]))
+print(np.bincount(KMeans(n_clusters = 4).fit_predict(data_clse)))
 
 
 
+# %% 3 - impute missing data using LOCF (forward fill)
+data_rets = data_rets.ffill()
+data_rets = data_rets[start_date:end_date]
+data_rets = MinMaxScaler().fit_transform(data_rets).T
 
+cluster_plots(data_rets, "Returns - Scaled")
+
+print(np.bincount(KMeans(n_clusters = 4).fit_predict(data_rets)))
 
 
 
 # %% 4 - 
-
-
-
-# %% 5 - 
-
-
-
-# %% 6 - 
-
-
-
-# %% 7 - 
