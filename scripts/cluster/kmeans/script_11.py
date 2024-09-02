@@ -39,18 +39,8 @@ data = yf.download(indices, "2018-12-31", "2024-01-01", progress = False)
 
 
 
-# %% 3 - collect column names with data
-rows = data["Close"].shape[0]
-cols = []
-
-for column in data["Close"].columns:
-    if data["Close"][column].isna().sum() / rows != 0:
-        cols.append(column) 
-
-
-
 # %% 3 - 
-data_clse = data["Close"].drop(columns = cols)
+data_clse = data["Close"].dropna(axis = 1)
 data_rets = pd.DataFrame({index: data_clse[index].pct_change() * 100 for index in data_clse.columns})
 
 
@@ -64,7 +54,7 @@ def cluster_plots(data, title):
     for i in  K:
         cluster = KMeans(n_clusters = i).fit(data)
         elbw.append(cluster.inertia_)
-        sils.append(silhouette_score(data.values, cluster.labels_))
+        sils.append(silhouette_score(data, cluster.labels_))
 
     fig, axes = plt.subplots(1, 2, figsize = (16, 6))
 
