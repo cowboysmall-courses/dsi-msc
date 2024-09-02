@@ -5,13 +5,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import seaborn as sns
-
-import statsmodels.api as sm
 
 import yfinance as yf
-
-from collections import Counter
 
 from itertools import combinations
 
@@ -30,7 +25,7 @@ warnings.filterwarnings("ignore", category = FutureWarning)
 
 
 # %% 1 - retrieve data for DJIA
-indices    = snp500.read()["Symbol"].to_list()
+indices = snp500.read()["Symbol"].to_list()
 
 
 

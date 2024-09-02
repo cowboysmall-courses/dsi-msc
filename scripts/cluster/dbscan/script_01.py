@@ -5,19 +5,14 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import seaborn as sns
-
-import statsmodels.api as sm
 
 import yfinance as yf
-
-from collections import Counter
 
 from itertools import combinations
 
 from statsmodels.tsa.stattools import coint
 
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.decomposition import PCA
 from sklearn.cluster import DBSCAN
 from sklearn.manifold import TSNE
@@ -30,7 +25,7 @@ warnings.filterwarnings("ignore", category = FutureWarning)
 
 
 # %% 1 - retrieve data for DJIA
-indices    = snp500.read()["Symbol"].to_list()
+indices = snp500.read()["Symbol"].to_list()
 
 
 
