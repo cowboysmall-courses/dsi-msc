@@ -38,25 +38,25 @@ dependencies = [
 
   "statsmodels",
   "scikit-learn",
-  "imbalanced-learn",
+  # "imbalanced-learn",
 
   # "torch",
   # "torchvision",
   # "torchaudio",
 
-  "nltk",
-  "wordcloud",
+  # "nltk",
+  # "wordcloud",
 
   "yfinance[nospam]",
   "pandas-datareader",
-  "mplfinance",
-  "ta",
-  "pandas-ta",
+  # "mplfinance",
+  # "ta",
+  # "pandas-ta",
 
   "ipykernel",
   "jupyter",
-    # "spyder-kernels",
-  "spyder-kernels==3.0.0b5",
+  # "spyder-kernels",
+  # "spyder-kernels==3.0.0b5",
 
   "pyasyncore",
   "pyasynchat",
