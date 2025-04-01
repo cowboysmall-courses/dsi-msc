@@ -39,20 +39,20 @@ dependencies = [
 
   "statsmodels",
   "scikit-learn",
-  # "imbalanced-learn",
+  "imbalanced-learn",
 
   # "torch",
   # "torchvision",
   # "torchaudio",
 
-  # "nltk",
-  # "wordcloud",
+  "nltk",
+  "wordcloud",
 
   "yfinance[nospam]",
   "pandas-datareader",
-  # "mplfinance",
-  # "ta",
-  # "pandas-ta",
+  "mplfinance",
+  "ta",
+  "pandas-ta",
 
   "ipykernel",
   "jupyter",
